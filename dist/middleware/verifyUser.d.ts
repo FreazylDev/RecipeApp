@@ -6,5 +6,5 @@ declare global {
         }
     }
 }
-export declare const verifyRefreshToken: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const verifyRefreshToken: (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=verifyUser.d.ts.map

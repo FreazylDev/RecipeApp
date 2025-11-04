@@ -21,19 +21,33 @@ export class TokenService {
         });
     }
     static decodeToken(token, checkAdmin = false) {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        return checkAdmin
-            ? { _id: decoded._id, role: decoded.role }
-            : { _id: decoded._id };
+        try {
+            const decoded = jwt.verify(token, JWT_SECRET);
+            return checkAdmin
+                ? { _id: decoded.id, role: decoded.role }
+                : { _id: decoded.id };
+        }
+        catch (err) {
+            return 401;
+        }
     }
     static async verifyUser(token, checkAdmin = false) {
         if (!token?.startsWith("Bearer ") || !token?.split(" ")[1]) {
-            return 401;
+            return 400;
         }
         token = token.split(" ")[1];
         const decodedToken = this.decodeToken(token, checkAdmin);
-        const user = await User.findById(decodedToken._id);
-        return user;
+        if (decodedToken === 401)
+            return 401;
+        try {
+            const user = await User.findById(decodedToken._id);
+            if (!user)
+                return 401;
+            return user;
+        }
+        catch (err) {
+            return 401;
+        }
     }
     static calcLength(length) {
         const match = length.match(/^(\d+)([a-zA-Z])$/);

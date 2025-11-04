@@ -15,6 +15,11 @@ declare global {
 
 export const verifyRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
     const user = await TokenService.verifyUser(req.headers.authorization);
-    console.log(user);
+    if (user === 400) {
+        return res.status(400).json({ "auth failed": "Bad request (400)" });
+    } else if (user === 401) {
+        return res.status(401).json({ "auth failed": "Unauthorized (401)" });
+    }
+    req.userId = user?.id;
     next();
 }

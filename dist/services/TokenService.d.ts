@@ -8,7 +8,7 @@ export declare class TokenService {
     static setToken(payload: object, expiresIn: number): string;
     static setCookie(res: Response, key: string, payload: object, lengthStr: string): Response<any, Record<string, any>>;
     private static decodeToken;
-    static verifyUser(token: string | undefined, checkAdmin?: boolean): Promise<UserDocument | 401 | null>;
+    static verifyUser(token: string | undefined, checkAdmin?: boolean): Promise<UserDocument | 401 | 400 | null>;
     private static calcLength;
 }
 export {};

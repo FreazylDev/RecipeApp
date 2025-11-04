@@ -27,22 +27,33 @@ export class TokenService {
     }
 
     private static decodeToken(token: string, checkAdmin = false) {
-        const decoded = jwt.verify(token, JWT_SECRET) as { _id: string, role?: string };
+        try {
+            const decoded = jwt.verify(token, JWT_SECRET) as { id: string, role?: string };
 
-        return checkAdmin
-            ? { _id: decoded._id, role: decoded.role }
-            : { _id: decoded._id };
+            return checkAdmin
+                ? { _id: decoded.id, role: decoded.role }
+                : { _id: decoded.id };
+        } catch (err) {
+            return 401;
+        }
     }
 
-    static async verifyUser(token: string | undefined, checkAdmin = false): Promise<UserDocument | 401 | null> {
+    static async verifyUser(token: string | undefined, checkAdmin = false): Promise<UserDocument | 401 | 400 | null> {
         if (!token?.startsWith("Bearer ") || !token?.split(" ")[1]) {
-            return 401;
+            return 400;
         }
         token = token.split(" ")[1] as string;
         const decodedToken = this.decodeToken(token, checkAdmin);
 
-        const user = await User.findById(decodedToken._id);
-        return user;
+        if (decodedToken === 401) return 401;
+
+        try {
+            const user = await User.findById(decodedToken._id);
+            if (!user) return 401;
+            return user;
+        } catch (err) {
+            return 401;
+        }
     }
 
 
