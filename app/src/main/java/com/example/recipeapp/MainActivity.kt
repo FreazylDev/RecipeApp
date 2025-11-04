@@ -1,0 +1,22 @@
+package com.example.recipeapp
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
+import com.example.recipeapp.ui.nav.NavGraph
+import com.example.recipeapp.ui.theme.RecipeAppTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            RecipeAppTheme {
+                val navController = rememberNavController()
+                NavGraph(navController)
+            }
+        }
+    }
+}
