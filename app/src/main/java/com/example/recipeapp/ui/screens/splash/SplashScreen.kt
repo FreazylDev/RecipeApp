@@ -1,0 +1,57 @@
+package com.example.recipeapp.ui.screens.splash
+
+import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.recipeapp.ui.nav.Routes
+import com.example.recipeapp.ui.screens.disconnected.Disconnected
+import com.example.recipeapp.ui.screens.home.HomeScreen
+import com.example.recipeapp.ui.screens.login.Login
+
+@Composable
+fun SplashScreen(
+    viewModel: SplashViewModel = viewModel(),
+    navController: NavController
+) {
+    val isDataLoaded = viewModel.isDataLoaded.collectAsState()
+    val errorMsg = viewModel.errorMsg.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadData()
+    }
+
+    LaunchedEffect(isDataLoaded.value) {
+        if (isDataLoaded.value) {
+            when (errorMsg.value) {
+                "401" -> navController.navigate(Routes.LOGIN) {
+                    Log.d("DEBUG", "Screen Login")
+                    popUpTo(Routes.SPLASH_SCREEN) { inclusive = true }
+                }
+                "404" -> navController.navigate(Routes.DISCONNECTED) {
+                    Log.d("DEBUG", "Screen Disconnected")
+                    popUpTo(Routes.SPLASH_SCREEN) { inclusive = true }
+                }
+                else -> navController.navigate(Routes.HOME) {
+                    Log.d("DEBUG", "Screen Home")
+                    popUpTo(Routes.SPLASH_SCREEN) { inclusive = true }
+                }
+            }
+        }
+    }
+
+    // Default
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(errorMsg.value)
+    }
+}

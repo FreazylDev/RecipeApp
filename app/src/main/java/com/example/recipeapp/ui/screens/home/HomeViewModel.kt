@@ -11,32 +11,11 @@ import com.example.recipeapp.network.RetrofitInstance
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    private val _res = mutableStateOf<MainResponse?>(null)
-    val res: State<MainResponse?> = _res
-
     private val _recipes = mutableStateOf<List<Recipe>>(emptyList())
     val recipes: State<List<Recipe>> = _recipes
 
     private val _resMsg = mutableStateOf<String?>(null)
     val resMsg: State<String?> = _resMsg
 
-    init {
-        loadRecipes()
-    }
 
-    private fun loadRecipes() {
-        viewModelScope.launch {
-            _resMsg.value = "Loading"
-            try {
-                val result = RetrofitInstance.api.getRecipes()
-                _res.value = result
-                _recipes.value = _res.value?.recipes.orEmpty()
-                _resMsg.value = null
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.d("Debug", "Reached Error: $e")
-                _resMsg.value = "Connection failed"
-            }
-        }
-    }
 }

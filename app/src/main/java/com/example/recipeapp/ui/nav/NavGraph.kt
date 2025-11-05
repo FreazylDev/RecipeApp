@@ -1,16 +1,34 @@
 package com.example.recipeapp.ui.nav
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
+import com.example.recipeapp.ui.screens.disconnected.Disconnected
 import com.example.recipeapp.ui.screens.home.HomeScreen
+import com.example.recipeapp.ui.screens.login.Login
+import com.example.recipeapp.ui.screens.splash.SplashScreen
+import com.example.recipeapp.ui.screens.splash.SplashViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Routes.HOME) {
+    val splashViewModel: SplashViewModel = viewModel()
+    NavHost(navController, startDestination = Routes.SPLASH_SCREEN) {
+        composable(Routes.SPLASH_SCREEN) {
+            SplashScreen(
+                viewModel = splashViewModel,
+                navController
+            )
+        }
         composable(Routes.HOME) {
-            HomeScreen()
+            HomeScreen(recipes = splashViewModel.recipes)
+        }
+        composable(Routes.LOGIN) {
+            Login()
+        }
+        composable(Routes.DISCONNECTED) {
+            Disconnected()
         }
     }
 }
