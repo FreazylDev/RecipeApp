@@ -7,6 +7,7 @@ import { error } from "console";
 export const addRecipe = async (req: Request, res: Response) =>  {
     const { title, frontImage, ingredients, contents, tags } = req.body;
     const { userId } = req;
+    console.log("Hello")
     try {
         const recipe = await Recipe.create({
             author: userId,

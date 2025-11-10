@@ -5,6 +5,5 @@ export declare class UserData {
     role: string;
     constructor(username: string, phoneNumber: string, role: string);
 }
-export declare const signup: (req: Request, res: Response) => Promise<void>;
 export declare const login: (req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=api.auth.controller.d.ts.map

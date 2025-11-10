@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { type Response } from "express";
 import dotenv from "dotenv";
 import { Document, Types } from "mongoose";
-import { User, type IUser } from "../models/user/User.js";
+import { User, type IUser } from "../models/User.js";
 
 dotenv.config();
 
@@ -38,10 +38,6 @@ export class TokenService {
         }
     }
 
-    private static sendStatusCode(code: number) {
-        return { err: "Error", statusCode: code };
-    }
-
     static async verifyUser(token: string | undefined, checkAdmin = false): Promise<UserDocument | 401 | 403> {
         if (!token?.startsWith("Bearer ") || !token?.split(" ")[1]) {
             return 401;
@@ -49,8 +45,7 @@ export class TokenService {
         token = token.split(" ")[1] as string;
         const decodedToken = this.decodeToken(token, checkAdmin);
 
-        if (decodedToken === 401) return 401;
-
+        if (decodedToken === 401) return 401;        
         try {
             const user = await User.findById(decodedToken._id);
             if (!user) return 401;
@@ -58,7 +53,6 @@ export class TokenService {
             if (checkAdmin) {
                 if (user.role !== "admin") return 403;
             }
-
             return user;
 
         } catch (err) {

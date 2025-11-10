@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-import { User } from "../models/user/User.js";
+import { User } from "../models/User.js";
 import { TokenService } from "../services/TokenService.js";
 
 declare global {
@@ -25,14 +25,18 @@ const handleErrors = (res: Response, code: number) => {
 
 export const verifyRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
     const user = await TokenService.verifyUser(req.headers.authorization);
-    if (typeof user === "number") return handleErrors(res, user);
+    if (typeof user === "number") {
+        return handleErrors(res, user);
+    };
     
     req.userId = user.id;
     next();
 }
 
 export const verifyAdmin = async (req: Request, res: Response, next: NextFunction) => {
+
     const user = await TokenService.verifyUser(req.headers.authorization, true);
+
     if (typeof user === "number") return handleErrors(res, user);
     
     req.userId = user.id;

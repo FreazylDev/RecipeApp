@@ -1,29 +1,35 @@
+const jsonErr = (msg: String): { err: String } => {
+    return {
+        err: msg
+    }
+}
+
 export const handleAuthErrors = (err: any) => {
     
     if (err.code === 11000) {
         const { keyPattern } = err;
         const key = Object.keys(keyPattern).toString();
-        if (key === "username") return "Je hebt al een account aangemaakt";
-        if (key === "phoneNumber") return "Dit telefoon nummer wordt al bij een ander account gebruikt";
+        if (key === "username") return jsonErr("Je hebt al een account aangemaakt");
+        if (key === "email") return "Incorrecte email"
     }
 
     if (err._message === "user validation failed") {
         const msg = err.message || "";
-        if (msg.includes("not a valid phone number")) {
-            return "Dit is geen geldig Nederlands telefoon nummer";
+        if (msg.includes("not an email")) {
+            return "Geen geldig email"
         } else if (msg.includes("username not set")) {
-            return "Voer een naam toe";
-        } else if (msg.includes("phone number not set")) {
-            return "Voeg een telefoonnummer toe"
+            return "Voeg een naam toe"
+        } else if (msg.includes("email not set")) {
+            return "Voeg een email toe"
         }
         return "Validatie fout: " + err
     }
 
     if (err === "user not found") {
-        return "Geen gebruiker met deze naam gevonden";
+        return "Deze naam bestaat niet";
     }
-    if (err === "incorrect phone number") {
-        return "Incorrecte telefoon nummer"
+    if (err === "incorrect email") {
+        return "Incorrecte email"
     }
 
     return err;

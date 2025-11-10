@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 import dotenv from "dotenv";
 import { UserData } from "./api/auth/api.auth.controller.js";
-import { User } from "../models/user/User.js";
+import { User } from "../models/User.js";
 import { handleAuthErrors } from "./api/auth/api.auth.errors.js";
 
 dotenv.config();
@@ -16,8 +16,8 @@ export const test = (req: Request, res: Response) => {
 }
 
 export const addUser = async (req: Request, res: Response) => {
-    const { username, phoneNumber, role } = req.body;
-    const userData = new UserData(username, phoneNumber, role);
+    const { username, email, role } = req.body;
+    const userData = new UserData(username, email, role);
     try {
         const user = await User.create(userData);
         res.status(200).json({ "user created": user });

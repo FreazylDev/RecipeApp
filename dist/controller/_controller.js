@@ -1,8 +1,8 @@
 import {} from "express";
 export const index = (req, res) => {
-    res.render("index");
+    res.send("Home");
 };
 export const _404 = (req, res) => {
-    res.render("404");
+    res.send("404");
 };
 //# sourceMappingURL=_controller.js.map

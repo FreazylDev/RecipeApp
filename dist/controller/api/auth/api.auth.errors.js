@@ -10,9 +10,15 @@ export const handleAuthErrors = (err) => {
     if (err._message === "user validation failed") {
         const msg = err.message || "";
         if (msg.includes("not a valid phone number")) {
-            return "Dit is geen geldige telefoon nummer";
+            return "Dit is geen geldig Nederlands telefoon nummer";
         }
-        return "Validatie fout";
+        else if (msg.includes("username not set")) {
+            return "Voer een naam toe";
+        }
+        else if (msg.includes("phone number not set")) {
+            return "Voeg een telefoonnummer toe";
+        }
+        return "Validatie fout: " + err;
     }
     if (err === "user not found") {
         return "Geen gebruiker met deze naam gevonden";

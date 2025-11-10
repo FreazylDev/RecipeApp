@@ -31,9 +31,12 @@ export class TokenService {
             return 401;
         }
     }
+    static sendStatusCode(code) {
+        return { err: "Error", statusCode: code };
+    }
     static async verifyUser(token, checkAdmin = false) {
         if (!token?.startsWith("Bearer ") || !token?.split(" ")[1]) {
-            return 400;
+            return 401;
         }
         token = token.split(" ")[1];
         const decodedToken = this.decodeToken(token, checkAdmin);
@@ -43,6 +46,10 @@ export class TokenService {
             const user = await User.findById(decodedToken._id);
             if (!user)
                 return 401;
+            if (checkAdmin) {
+                if (user.role !== "admin")
+                    return 403;
+            }
             return user;
         }
         catch (err) {

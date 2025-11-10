@@ -1,1 +1,1 @@
-{"version":3,"file":"api.router.d.ts","sourceRoot":"","sources":["../../src/router/api.router.ts"],"names":[],"mappings":"AACA,QAAA,MAAM,SAAS,4CAAmB,CAAC;AAmBnC,eAAe,SAAS,CAAC"}
+{"version":3,"file":"api.router.d.ts","sourceRoot":"","sources":["../../src/router/api.router.ts"],"names":[],"mappings":"AACA,QAAA,MAAM,SAAS,4CAAmB,CAAC;AAkBnC,eAAe,SAAS,CAAC"}

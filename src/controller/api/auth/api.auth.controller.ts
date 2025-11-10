@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { User } from "../../../models/user/User.js";
+import { User } from "../../../models/User.js";
 import { handleAuthErrors } from "./api.auth.errors.js";
 import { TokenService } from "../../../services/TokenService.js";
 
@@ -9,18 +9,18 @@ const JWT_SECRET = "123";
 
 export class UserData {
     username: string;
-    phoneNumber: string;
+    email: string;
     role: string;
-    constructor(username: string, phoneNumber: string, role: string) {
+    constructor(username: string, email: string, role: string) {
         this.username = username;
-        this.phoneNumber = phoneNumber;
+        this.email = email;
         this.role = role || "user";
     }
 }
 
 export const login = async (req: Request, res: Response) => {
-    const { username, phoneNumber } = req.body;
-    const userData = new UserData(username, phoneNumber, "user");
+    const { username, email } = req.body;
+    const userData = new UserData(username, email, "user");
     try {
         const user = await User.login(userData);
 
@@ -38,6 +38,6 @@ export const login = async (req: Request, res: Response) => {
         res.status(201).json(user);
     } catch (err: any) {
         err = handleAuthErrors(err.message);
-        res.json(err);
+        res.status(401).json(err);
     }
 }

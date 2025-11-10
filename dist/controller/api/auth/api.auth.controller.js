@@ -1,5 +1,4 @@
 import {} from "express";
-import jwt, {} from "jsonwebtoken";
 import { User } from "../../../models/user/User.js";
 import { handleAuthErrors } from "./api.auth.errors.js";
 import { TokenService } from "../../../services/TokenService.js";
@@ -16,22 +15,6 @@ export class UserData {
         this.role = role || "user";
     }
 }
-export const signup = async (req, res) => {
-    console.log(req.headers.bearer);
-    const { username, phoneNumber, role } = req.body;
-    const userData = new UserData(username, phoneNumber, role);
-    try {
-        const user = await User.create(userData);
-        TokenService.setCookie(res, "refresh_token", {
-            id: user._id
-        }, "30d");
-        res.status(200).json(user);
-    }
-    catch (err) {
-        err = handleAuthErrors(err);
-        res.status(500).json(err);
-    }
-};
 export const login = async (req, res) => {
     const { username, phoneNumber } = req.body;
     const userData = new UserData(username, phoneNumber, "user");
@@ -40,6 +23,9 @@ export const login = async (req, res) => {
         TokenService.setCookie(res, "refresh_token", {
             id: user._id
         }, "30d");
+        if (!user.activated) {
+            await User.findOneAndUpdate({ _id: user._id }, { activated: true }, { new: true });
+        }
         res.status(201).json(user);
     }
     catch (err) {

@@ -7,4 +7,5 @@ declare global {
     }
 }
 export declare const verifyRefreshToken: (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const verifyAdmin: (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=verifyUser.d.ts.map
