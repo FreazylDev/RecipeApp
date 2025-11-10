@@ -24,16 +24,16 @@ fun SplashScreen(
     viewModel: SplashViewModel = viewModel(),
     navController: NavController
 ) {
-    val isDataLoaded = viewModel.isDataLoaded.collectAsState()
-    val errorMsg = viewModel.errorMsg.collectAsState()
+    val isLoading = viewModel.uiState.collectAsState().value.isLoading
+    val errorMsg = viewModel.uiState.collectAsState().value.errorMsg
 
     LaunchedEffect(Unit) {
         viewModel.loadData()
     }
 
-    LaunchedEffect(isDataLoaded.value) {
-        if (isDataLoaded.value) {
-            when (errorMsg.value) {
+    LaunchedEffect(!isLoading) {
+        if (!isLoading) {
+            when (errorMsg) {
                 "unauthorized" -> navController.navigate(Routes.LOGIN) {
                     popUpTo(Routes.SPLASH_SCREEN) { inclusive = true }
                 }

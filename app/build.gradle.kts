@@ -62,6 +62,7 @@ dependencies {
 
     implementation(libs.retrofit.v290)
     implementation(libs.converter.gson.v290)
+    implementation(libs.gson)
     implementation(libs.androidx.material)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.lifecycle.runtime.ktx.v261)

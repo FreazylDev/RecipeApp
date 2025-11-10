@@ -23,10 +23,10 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(Routes.HOME) {
-            HomeScreen(recipes = splashViewModel.recipes)
+            HomeScreen(recipes = splashViewModel.uiState.value.recipes)
         }
         composable(Routes.LOGIN) {
-            LoginScreen(userOptions = splashViewModel.unactivatedUsers)
+            LoginScreen(userOptions = splashViewModel.uiState.value.unactivatedUsers)
         }
         composable(Routes.NO_USER_PICKS_ERR) {
             NoUserPicksErrScreen()

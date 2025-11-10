@@ -6,13 +6,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    const val URL = "https://8cced0d1e3c9.ngrok-free.app/"
-    private const val BEARER_TOKEN = "eyJhbGciiJ..." // To modify later
+    const val URL = "https://c47d30637d1d.ngrok-free.app/"
 
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
+            val token = "1234" // Get token later
             val request: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $BEARER_TOKEN")
+                .apply {
+                    token?.let {
+                        addHeader("Authorization", "Bearer $token")
+                    }
+                }
                 .build()
             chain.proceed(request)
         }

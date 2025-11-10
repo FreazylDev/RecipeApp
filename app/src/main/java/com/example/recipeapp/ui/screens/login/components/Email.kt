@@ -22,16 +22,17 @@ import androidx.compose.ui.unit.sp
 private val fontSize = 20.sp
 
 @Composable
-fun FormPhoneNumber(
-    phoneNumber: String,
-    onPhoneNumberChange: (String) -> Unit
+fun FormEmail(
+    email: String,
+    emailError: String,
+    onEmailChange: (String) -> Unit
 ) {
     Column {
-        Text("Telefoon nummer", fontSize = fontSize)
+        Text("Email", fontSize = fontSize)
         Spacer(modifier = Modifier.height(7.dp))
         Row(
             modifier = Modifier
-                .fillMaxWidth(.8f)
+                .fillMaxWidth()
                 .background(
                     color = Color(0xFFF9F8F6),
                     shape = RoundedCornerShape(10.dp)
@@ -43,22 +44,20 @@ fun FormPhoneNumber(
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FirstDigits()
             BasicTextField(
-                value = phoneNumber,
-                onValueChange = { onPhoneNumberChange(it) },
+                value = email,
+                onValueChange = { onEmailChange(it) },
                 textStyle = TextStyle(
                     fontSize = fontSize
                 )
             )
         }
+        if (emailError.isNotEmpty()) {
+            Text(
+                text = emailError,
+                fontSize = 16.sp,
+                color = Color.Red
+            )
+        }
     }
-}
-
-@Composable
-fun FirstDigits() {
-    Text(
-        text = "06 ",
-        fontSize = fontSize
-    )
 }

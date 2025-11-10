@@ -34,6 +34,7 @@ private val fontSize = 20.sp
 @Composable
 fun UsernameForm(
     userOptions: List<String>,
+    usernameErr: String,
     onUserChange: (String) -> Unit,
     selectedUser: String
 ) {
@@ -64,6 +65,13 @@ fun UsernameForm(
                 )
             }
         }
+        if (usernameErr.isNotEmpty()) {
+            Text(
+                text = usernameErr,
+                fontSize = 16.sp,
+                color = Color.Red
+            )
+        }
     }
 }
 
@@ -77,7 +85,7 @@ fun Display(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(.8f)
+            .fillMaxWidth()
             .background(
                 color = Color(0xFFF9F8F6),
                 shape = RoundedCornerShape(10.dp)

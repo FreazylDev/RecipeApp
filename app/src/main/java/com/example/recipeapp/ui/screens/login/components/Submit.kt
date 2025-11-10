@@ -17,7 +17,7 @@ fun SubmitBtnForm(
     onSubmit: () -> Unit
 ) {
     TextButton(
-        onClick = { onSubmit },
+        onClick = { onSubmit() },
         modifier = Modifier
             .clip(RoundedCornerShape(10.dp))
             .background(Color(0xFFFEEE91)),

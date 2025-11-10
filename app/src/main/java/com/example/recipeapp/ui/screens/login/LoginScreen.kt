@@ -24,9 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipeapp.R
-import com.example.recipeapp.ui.screens.login.components.FormPhoneNumber
+import com.example.recipeapp.ui.screens.login.components.FormEmail
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontWeight
 import com.example.recipeapp.ui.screens.login.components.UsernameForm
 import com.example.recipeapp.ui.screens.login.components.form.SubmitBtnForm
 
@@ -88,23 +89,32 @@ fun Contents(loginViewModel: LoginViewModel) {
             Spacer(modifier = Modifier.height(32.dp))
 
             UsernameForm(
-                userOptions = loginViewModel.userOptions.collectAsState().value,
+                userOptions = loginViewModel.uiState.collectAsState().value.userOptions,
+                usernameErr = loginViewModel.uiState.collectAsState().value.form.usernameError,
                 onUserChange = loginViewModel::onUserChange,
-                selectedUser = loginViewModel.username.collectAsState().value
+                selectedUser = loginViewModel.uiState.collectAsState().value.form.username
             )
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            FormPhoneNumber(
-                phoneNumber = loginViewModel.phoneNumber.collectAsState().value,
-                onPhoneNumberChange = loginViewModel::onPhoneNumberChange
+            FormEmail(
+                email = loginViewModel.uiState.collectAsState().value.form.email,
+                emailError = loginViewModel.uiState.collectAsState().value.form.emailError,
+                onEmailChange = loginViewModel::onEmailChange
             )
 
             Spacer(modifier = Modifier.height(55.dp))
 
             SubmitBtnForm() {
-
+                loginViewModel.onSubmit()
             }
+        }
+        val unknownError = loginViewModel.uiState.collectAsState().value.form.unknownError
+        if (unknownError.isNotEmpty()) {
+            UnknownErrorBox(
+                err = unknownError,
+                onClose = { loginViewModel.clearErrors() }
+            )
         }
     }
 }
@@ -117,4 +127,31 @@ fun Greet() {
         modifier = Modifier
             .padding(10.dp)
     )
+}
+
+@Composable
+fun UnknownErrorBox(err: String, onClose: () -> Unit) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+            .background(Color.Red)
+    ) {
+        Column {
+            Text(
+                text = "Onbekende fout:",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = err
+            )
+            TextButton(
+                onClick = { onClose() }
+            ) {
+                Text("Probeer opnieuw")
+            }
+        }
+    }
 }
