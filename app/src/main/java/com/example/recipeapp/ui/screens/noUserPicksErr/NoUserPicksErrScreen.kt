@@ -1,4 +1,4 @@
-package com.example.recipeapp.ui.screens.login
+package com.example.recipeapp.ui.screens.noUserPicksErr
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Login() {
+fun NoUserPicksErrScreen () {
     Scaffold { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            Text("Log in")
+            Text("No user left to log in from")
         }
     }
 }

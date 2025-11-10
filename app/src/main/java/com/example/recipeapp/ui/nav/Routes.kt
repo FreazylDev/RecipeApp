@@ -5,5 +5,6 @@ object Routes {
     val HOME = "home"
     val RECIPE = "recipe"
     val LOGIN = "login"
+    val NO_USER_PICKS_ERR = "noUserPicksErr"
     val DISCONNECTED = "disconnected"
 }

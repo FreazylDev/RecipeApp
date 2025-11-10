@@ -7,7 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import com.example.recipeapp.ui.screens.disconnected.Disconnected
 import com.example.recipeapp.ui.screens.home.HomeScreen
-import com.example.recipeapp.ui.screens.login.Login
+import com.example.recipeapp.ui.screens.login.LoginScreen
+import com.example.recipeapp.ui.screens.noUserPicksErr.NoUserPicksErrScreen
 import com.example.recipeapp.ui.screens.splash.SplashScreen
 import com.example.recipeapp.ui.screens.splash.SplashViewModel
 
@@ -25,7 +26,10 @@ fun NavGraph(navController: NavHostController) {
             HomeScreen(recipes = splashViewModel.recipes)
         }
         composable(Routes.LOGIN) {
-            Login()
+            LoginScreen(userOptions = splashViewModel.unactivatedUsers)
+        }
+        composable(Routes.NO_USER_PICKS_ERR) {
+            NoUserPicksErrScreen()
         }
         composable(Routes.DISCONNECTED) {
             Disconnected()

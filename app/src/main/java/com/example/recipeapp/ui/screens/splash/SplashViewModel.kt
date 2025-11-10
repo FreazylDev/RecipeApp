@@ -17,6 +17,8 @@ class SplashViewModel : ViewModel() {
 
     private val _errorMsg = MutableStateFlow("")
     val errorMsg: StateFlow<String> = _errorMsg
+
+    var unactivatedUsers: List<String> = emptyList()
     var recipes: List<Recipe> = emptyList()
 
     fun loadData() {
@@ -37,14 +39,22 @@ class SplashViewModel : ViewModel() {
                             Gson().fromJson(errorBody, object : TypeToken<List<String>>() {}.type)
                         } catch (e: Exception) {
                             // If fails, treat as single string
-                            listOf(errorBody.trim('"')) // remove quotes if needed
+                            listOf(errorBody.trim('"'))
                         }
                     } else {
                         listOf("Unknown error")
                     }
 
-                    _errorMsg.value = errors.joinToString(", ")
-                    Log.d("DEBUG", "Errors: $errors")
+                    unactivatedUsers = if (errors[0].contains("The endpoint") && errors[0].contains("is offline")) {
+                        listOf("Test 1", "Test 2", "Test 3", "Test 4")
+                    } else errors
+                    Log.d("DEBUG123", "$unactivatedUsers")
+
+                    if (unactivatedUsers.isEmpty()) {
+                        _errorMsg.value = "unauthorized + no users left"
+                    } else {
+                        _errorMsg.value = "unauthorized"
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
